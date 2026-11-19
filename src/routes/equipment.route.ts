@@ -11,4 +11,6 @@ router.get("/",equipmentController.getAllEquipment);
 
 router.get("/:id",equipmentController.get_equipment_by_id);
 
+router.put("/:id",equipmentController.updateEquipment);
+
 export default router;

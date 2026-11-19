@@ -69,8 +69,48 @@ const get_equipment_by_id = async (req: Request, res: Response) => {
   });
 };
 
+const updateEquipment = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, category, serial_number, status, purchase_date } = req.body;
+
+    const result = await pool.query(
+      `UPDATE equipment
+       SET name = $1,
+           category = $2,
+           serial_number = $3,
+           status = $4,
+           purchase_date = $5
+       WHERE id = $6
+       RETURNING *`,
+      [name, category, serial_number, status, purchase_date || null, id],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Equipment not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Equipment updated successfully",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to updata equipment",
+    });
+  }
+};
+
 export const equipmentController = {
   createEquipment,
   getAllEquipment,
   get_equipment_by_id,
+  updateEquipment,
 };
