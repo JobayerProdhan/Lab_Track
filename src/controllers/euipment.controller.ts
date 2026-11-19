@@ -1,4 +1,4 @@
-import { json, type Request, type Response } from "express";
+import { json, response, type Request, type Response } from "express";
 import { pool } from "../config/db.js";
 
 const createEquipment = async (req: Request, res: Response) => {
@@ -108,9 +108,39 @@ const updateEquipment = async (req: Request, res: Response) => {
   }
 };
 
+const delete_Equipment_by_id = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      `DELETE FROM equipment  WHERE id = $1 RETURNING *`,
+      [id],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid id",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Equipment deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error founded",
+    });
+  }
+};
+
 export const equipmentController = {
   createEquipment,
   getAllEquipment,
   get_equipment_by_id,
   updateEquipment,
+  delete_Equipment_by_id
 };
