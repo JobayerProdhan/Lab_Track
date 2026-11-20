@@ -1,5 +1,7 @@
 import { json, response, type Request, type Response } from "express";
-import { pool } from "../config/db.js";
+import { pool } from "../../config/db.js";
+
+
 
 const createEquipment = async (req: Request, res: Response) => {
   try {

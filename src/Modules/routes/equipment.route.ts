@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { equipmentController} from "../controllers/euipment.controller.js";
+import { equipmentController} from "../controllers/euipment.controller.js"
 
 
 
