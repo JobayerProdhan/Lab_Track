@@ -5,7 +5,7 @@ import { pool } from "../../config/db.js";
 
 export const registration = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body ?? {};
 
     // 1. validate  input
     if (!name || !email || !password) {
